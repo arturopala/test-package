@@ -1,0 +1,11 @@
+name: Build and publish example-lib package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  BuildAndPublishLambdaRuntime:
+    uses: ./.github/workflows/buildAndPublishPackage.yaml
+    secrets: inherit
+    with:
+      package-folder: 'example-lib'

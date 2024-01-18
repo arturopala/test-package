@@ -1,0 +1,7 @@
+.bsp/
+.metals/
+.vscode/
+.scala-build/
+.DS_Store
+bin/
+target/

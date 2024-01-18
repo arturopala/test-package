@@ -1,0 +1,44 @@
+name: Run Scala CLI
+
+on:
+  workflow_call:
+    inputs:
+      script-path:
+        required: true
+        type: string
+      aws-region:
+        required: true
+        type: string
+      role-to-assume:
+        required: true
+        type: string
+    secrets:
+      MAVEN_REGISTRY_TOKEN:
+        required: true     
+
+# Permission can be added at job level or workflow level
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: write # This is required for actions/checkout
+  pull-requests: write         
+
+jobs:
+  runWithScalaCLI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ inputs.role-to-assume }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ inputs.aws-region }}
+          unset-current-credentials: true
+      - uses: coursier/cache-action@v6
+      - uses: VirtusLab/scala-cli-setup@main
+        with:
+          jvm: adoptium:1.21
+      - name: Run the script
+        run: '${{ inputs.script-path }} ${{ secrets.MAVEN_REGISTRY_TOKEN }}'
+        shell: bash
