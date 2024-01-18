@@ -1,6 +1,5 @@
 //> using publish.organization "io.github.arturopala"
 //> using publish.name "example-lib"
-//> using publish.computeVersion "git:tag"
 //> using publish.repository "github"
 //> using publish.license "Apache-2.0"
 //> using publish.url "https://github.com/arturopala/test-package"
